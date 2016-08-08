@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Calculator</title>
+		<meta charset="UTF-8">
+		<style>
+		input 
+		{
+			width: 100px;
+			height: 100px;
+			font-size: 75px;
+			background-color: #F44336;
+			color: #000000;
+			border-radius: 20px;
+			border: 5px solid #000000;
+			transition-duration: .4s;
+		}
+		img
+		{
+			top: -465px;
+			position: fixed;
+		}
+		input:hover
+		{
+			background-color: #FFEBEE;
+			color: #000000;
+		}
+		@keyframes spin
+		{
+			from {transform: rotate(0deg); background-color: #F44336;}
+			to {transform: rotate(360deg); background-color: #4CAF50;}
+		}
+		@keyframes drop
+		{
+			from {top: -465px;}
+			to {top: 0px;}
+		}
+		@keyframes slide
+		{
+			from {top: 0px;}
+			to {top: 230px;}
+		}
+		</style>
+		<script>
+			var first = "";
+			var op = "";
+			var temp = "";
+			var equ = false;
+			function one()
+			{
+				temp += 1;
+				display.innerHTML = first + op + temp;
+			}		
+			function two()
+			{
+				temp += 2;
+				display.innerHTML = first + op + temp;
+			}
+			function three()
+			{
+				temp += 3;
+				display.innerHTML = first + op + temp;
+			}
+			function four()
+			{
+				temp += 4;
+				display.innerHTML = first + op + temp;
+			}
+			function five()
+			{
+				temp += 5;
+				display.innerHTML = first + op + temp;
+			}
+			function six()
+			{
+				temp += 6;
+				display.innerHTML = first + op + temp;
+			}
+			function seven()
+			{
+				temp += 7;
+				display.innerHTML = first + op + temp;
+			}
+			function eight()
+			{
+				temp += 8;
+				display.innerHTML = first + op + temp;
+			}
+			function nine()
+			{
+				temp += 9;
+				display.innerHTML = first + op + temp;
+			}
+			function zero()
+			{
+				temp += 0;
+				display.innerHTML = first + op + temp;
+			}
+			function point()
+			{
+				temp += ".";
+				display.innerHTML = first + op + temp;
+			}
+			function negative()
+			{
+				temp = temp * -1;
+				display.innerHTML = first + op + temp;
+			}
+			function plus()
+			{
+				if (op === "") {
+					first = temp;
+					temp = "";
+				}
+				if (first !== "") op = "+";
+				display.innerHTML = first + op + temp;
+			}
+			function minus()
+			{
+				if (op === "") {
+					first = temp;
+					temp = "";
+				}
+				if (first !== "") op = "-";
+				display.innerHTML = first + op + temp;
+			}
+			function times()
+			{
+				if (op === "") {
+					first = temp;
+					temp = "";
+				}
+				if (first !== "") op = "*";
+				display.innerHTML = first + op + temp;
+			}
+			function divide()
+			{
+				if (op === "") {
+					first = temp;
+					temp = "";
+				}
+				if (first !== "") op = "/";
+				display.innerHTML = first + op + temp;
+			}
+			function equals()
+			{
+				if (first !== "" && temp !== "") {
+					if (op === "+") {
+						temp = (parseFloat(first) + parseFloat(temp)).toString();
+						first = "";
+						op = "";
+					}
+					if (op === "-") {
+						temp = (parseFloat(first) - parseFloat(temp)).toString();
+						first = "";
+						op = "";
+					}
+					if (op === "*") {
+						temp = (parseFloat(first) * parseFloat(temp)).toString();
+						first = "";
+						op = "";
+					}
+					if (op === "/") {
+						temp = (parseFloat(first) / parseFloat(temp)).toString();
+						first = "";
+						op = "";
+					}
+				}
+				display.innerHTML = first + op + temp;
+				if (temp === "123.456") {	
+					var sheet = document.createElement('style');
+					sheet.innerHTML = "input {animation-name: spin; animation-duration: 0.5s; animation-iteration-count: infinite; animation-direction: alternate;} img {animation-name: drop; animation-fill-mode: forwards; animation-duration: 0.5s; animation-iteration-count: infinite; animation-direction: alternate;";
+					document.body.appendChild(sheet);
+					var timeoutID = window.setTimeout(delay, 500);
+				}
+			}
+			function back()
+			{
+				var len = temp.length;
+				if (len === 0 && op !== "") {
+					op = "";
+					temp = first;
+					first = "";
+				}
+				if (len > 0) temp = temp.substring(0, len - 1);
+				display.innerHTML = first + op + temp;
+				
+			}
+			function delay(p1)
+			{
+				var sheet = document.createElement('style');
+				sheet.innerHTML = "img {animation-name: slide;";
+				document.body.appendChild(sheet);
+			}
+			function reset()
+			{
+				display.innerHTML = "";
+				temp = "";
+				first = "";
+				op = "";
+			}
+			function input()
+			{
+				if (event.keyCode === 48 && !event.shiftKey) zero();
+				if (event.keyCode === 49 && !event.shiftKey) one();
+				if (event.keyCode === 50 && !event.shiftKey) two();
+				if (event.keyCode === 51 && !event.shiftKey) three();
+				if (event.keyCode === 52 && !event.shiftKey) four();
+				if (event.keyCode === 53 && !event.shiftKey) five();
+				if (event.keyCode === 54 && !event.shiftKey) six();
+				if (event.keyCode === 55 && !event.shiftKey) seven();
+				if (event.keyCode === 56 && !event.shiftKey) eight();
+				if (event.keyCode === 57 && !event.shiftKey) nine();
+				if (event.keyCode === 56 && event.shiftKey) times();
+				if (event.keyCode === 187 && event.shiftKey) plus();
+				if (event.keyCode === 189 && !event.shiftKey) minus();
+				if (event.keyCode === 191 && !event.shiftKey) divide();
+				if ((event.keyCode === 187 && !event.shiftKey) || event.keyCode === 13) equals();
+				if (event.keyCode === 8) back();
+			}
+		</script>
+	</head>
+	<body onkeydown="input()">
+		<img src="pirate.gif" style="left: 0px" />
+		<img src="dragon.gif" style="right: 0px" />
+		<div align=center style="height: 100px; font-size: 500%" id="display"></div>
+		<div align=center>
+			<table>
+				<tr>
+					<td><input name="one" onclick="one()" type="button" value="1" tabindex="1"></td>
+					<td><input name="two" onclick="two()" type="button" value="2" tabindex="2"></td>
+					<td><input name="three" onclick="three()" type="button" value="3" tabindex="3"></td>
+					<td><input name="plus" onclick="plus()" type="button" value="+" tabindex="4"></td>
+					<td><input name="back" onclick="back()" type="button" value="←" tabindex="13"></td>
+				</tr>
+				<tr>
+					<td><input name="four" onclick="four()" type="button" value="4" tabindex="4"></td>
+					<td><input name="five" onclick="five()" type="button" value="5" tabindex="5"></td>
+					<td><input name="six" onclick="six()" type="button" value="6" tabindex="6"></td>
+					<td><input name="minus" onclick="minus()" type="button" value="-" tabindex="7"></td>
+					<td><input name="reset" onclick="reset()" type="button" value="C" tabindex="13"></td>
+				</tr>
+				<tr>
+					<td><input name="seven" onclick="seven()" type="button" value="7" tabindex="7"></td>
+					<td><input name="eight" onclick="eight()" type="button" value="8" tabindex="8"></td>
+					<td><input name="nine" onclick="nine()" type="button" value="9" tabindex="9"></td>
+					<td><input name="times" onclick="times()" type="button" value="*" tabindex="10"></td>
+					<td rowspan=2><input name="equals" onclick="equals()" type="button" value="=" tabindex="13" style="height: 204px"></td>
+				</tr>
+				<tr>
+					<td><input name="zero" onclick="zero()" type="button" value="0" tabindex="10"></td>
+					<td><input name="point" onclick="point()" type="button" value="." tabindex="11"></td>
+					<td><input name="negative" onclick="negative()" type="button" value="±" tabindex="12"></td>
+					<td><input name="divide" onclick="divide()" type="button" value="/" tabindex="14"></td>
+				</tr>
+			</table>
+		</div>
+		<div align=center style="height: 100px; font-size: 500%">Secret animation when 123.456 is reached</div>
+	</body>
+</html>
