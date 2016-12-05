@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
-	<head>
+<!-- saved from url=(0023)http://codyferguson.us/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>Calculator</title>
-		<meta charset="UTF-8">
+		
 		<style>
 		input 
 		{
@@ -42,132 +42,136 @@
 		}
 		</style>
 		<script>
-			var first = "";
+			var stored = "";
 			var op = "";
-			var temp = "";
-			var equ = false;
+			var current = "";
+			function update()
+			{
+				display.innerHTML = stored + op + current;
+			}
+			function store() {
+				if (op === "") {
+					stored = current;
+					current = "";
+				}
+			}
+			function operator(newOp) {
+				if (stored !== "") op = newOp;
+			}
 			function one()
 			{
-				temp += 1;
-				display.innerHTML = first + op + temp;
+				current += 1;
+				update();
 			}		
 			function two()
 			{
-				temp += 2;
-				display.innerHTML = first + op + temp;
+				current += 2;
+				update();
 			}
 			function three()
 			{
-				temp += 3;
-				display.innerHTML = first + op + temp;
+				current += 3;
+				update();
 			}
 			function four()
 			{
-				temp += 4;
-				display.innerHTML = first + op + temp;
+				current += 4;
+				update();
 			}
 			function five()
 			{
-				temp += 5;
-				display.innerHTML = first + op + temp;
+				current += 5;
+				update();
 			}
 			function six()
 			{
-				temp += 6;
-				display.innerHTML = first + op + temp;
+				current += 6;
+				update();
 			}
 			function seven()
 			{
-				temp += 7;
-				display.innerHTML = first + op + temp;
+				current += 7;
+				update();
 			}
 			function eight()
 			{
-				temp += 8;
-				display.innerHTML = first + op + temp;
+				current += 8;
+				update();
 			}
 			function nine()
 			{
-				temp += 9;
-				display.innerHTML = first + op + temp;
+				current += 9;
+				update();
 			}
 			function zero()
 			{
-				temp += 0;
-				display.innerHTML = first + op + temp;
+				current += 0;
+				update();
 			}
 			function point()
 			{
-				temp += ".";
-				display.innerHTML = first + op + temp;
+				current += ".";
+				update();
 			}
 			function negative()
 			{
-				temp = temp * -1;
-				display.innerHTML = first + op + temp;
+				current = current * -1;
+				update();
 			}
 			function plus()
 			{
-				if (op === "") {
-					first = temp;
-					temp = "";
-				}
-				if (first !== "") op = "+";
-				display.innerHTML = first + op + temp;
+				store();
+				operator("+");
+				update();
 			}
 			function minus()
 			{
-				if (op === "") {
-					first = temp;
-					temp = "";
-				}
-				if (first !== "") op = "-";
-				display.innerHTML = first + op + temp;
+				store();
+				operator("-");
+				update();
 			}
 			function times()
 			{
-				if (op === "") {
-					first = temp;
-					temp = "";
-				}
-				if (first !== "") op = "*";
-				display.innerHTML = first + op + temp;
+				store();
+				operator("*");
+				update();
 			}
 			function divide()
 			{
-				if (op === "") {
-					first = temp;
-					temp = "";
-				}
-				if (first !== "") op = "/";
-				display.innerHTML = first + op + temp;
+				store();
+				operator("/");
+				update();
 			}
 			function equals()
 			{
-				if (first !== "" && temp !== "") {
-					if (op === "+") {
-						temp = (parseFloat(first) + parseFloat(temp)).toString();
-						first = "";
-						op = "";
-					}
-					if (op === "-") {
-						temp = (parseFloat(first) - parseFloat(temp)).toString();
-						first = "";
-						op = "";
-					}
-					if (op === "*") {
-						temp = (parseFloat(first) * parseFloat(temp)).toString();
-						first = "";
-						op = "";
-					}
-					if (op === "/") {
-						temp = (parseFloat(first) / parseFloat(temp)).toString();
-						first = "";
-						op = "";
+				if (stored !== "" && current !== "") {
+					switch(op) {
+						case "+":
+							current = (parseFloat(stored) + parseFloat(current));
+							stored = "";
+							op = "";
+							break;
+						case "-":
+							current = (stored - current);
+							stored = "";
+							op = "";
+							break;
+						case "*":
+							current = (stored * current);
+							stored = "";
+							op = "";
+							break;
+						case "/":
+							current = (stored / current);
+							stored = "";
+							op = "";
+							break;
+						default:
+						
 					}
 				}
-				display.innerHTML = first + op + temp;
-				if (temp === "123.456") {	
+				update();
+				if (current === "123.456") {	
 					var sheet = document.createElement('style');
 					sheet.innerHTML = "input {animation-name: spin; animation-duration: 0.5s; animation-iteration-count: infinite; animation-direction: alternate;} img {animation-name: drop; animation-fill-mode: forwards; animation-duration: 0.5s; animation-iteration-count: infinite; animation-direction: alternate;";
 					document.body.appendChild(sheet);
@@ -176,57 +180,105 @@
 			}
 			function back()
 			{
-				var len = temp.length;
+				var len = current.length;
 				if (len === 0 && op !== "") {
 					op = "";
-					temp = first;
-					first = "";
+					current = stored;
+					stored = "";
 				}
-				if (len > 0) temp = temp.substring(0, len - 1);
-				display.innerHTML = first + op + temp;
+				if (len > 0) current = current.substring(0, len - 1);
+				update();
 				
 			}
-			function delay(p1)
+			function reset()
+			{
+				display.innerHTML = "";
+				current = "";
+				stored = "";
+				op = "";
+			}
+			function input()
+			{
+				if (event.shiftKey) {
+					switch(event.keyCode) {
+						case 56:
+							times();
+							break;
+						case 187:
+							plus();
+							break;
+						case 13:
+							equals();
+							break;
+						default:
+						
+					}
+				}
+				else {
+					switch(event.keyCode) {
+						case 48:
+							zero();
+							break;
+						case 49:
+							one();
+							break;
+						case 50:
+							two();
+							break;
+						case 51:
+							three();
+							break;
+						case 52:
+							four();
+							break;
+						case 53:
+							five();
+							break;
+						case 54:
+							six();
+							break;
+						case 55:
+							seven();
+							break;
+						case 56:
+							eight();
+							break;
+						case 57:
+							nine();
+							break;
+						case 189:
+							minus();
+							break;
+						case 191:
+							divide();
+							break;
+						case 187:
+						case 13:
+							equals();
+							break;
+						case 8:
+							back();
+							break;
+						default:
+						
+					}
+				}
+			}
+			function delay()
 			{
 				var sheet = document.createElement('style');
 				sheet.innerHTML = "img {animation-name: slide;";
 				document.body.appendChild(sheet);
 			}
-			function reset()
-			{
-				display.innerHTML = "";
-				temp = "";
-				first = "";
-				op = "";
-			}
-			function input()
-			{
-				if (event.keyCode === 48 && !event.shiftKey) zero();
-				if (event.keyCode === 49 && !event.shiftKey) one();
-				if (event.keyCode === 50 && !event.shiftKey) two();
-				if (event.keyCode === 51 && !event.shiftKey) three();
-				if (event.keyCode === 52 && !event.shiftKey) four();
-				if (event.keyCode === 53 && !event.shiftKey) five();
-				if (event.keyCode === 54 && !event.shiftKey) six();
-				if (event.keyCode === 55 && !event.shiftKey) seven();
-				if (event.keyCode === 56 && !event.shiftKey) eight();
-				if (event.keyCode === 57 && !event.shiftKey) nine();
-				if (event.keyCode === 56 && event.shiftKey) times();
-				if (event.keyCode === 187 && event.shiftKey) plus();
-				if (event.keyCode === 189 && !event.shiftKey) minus();
-				if (event.keyCode === 191 && !event.shiftKey) divide();
-				if ((event.keyCode === 187 && !event.shiftKey) || event.keyCode === 13) equals();
-				if (event.keyCode === 8) back();
-			}
 		</script>
 	</head>
-	<body onkeydown="input()">
-		<img src="pirate.gif" style="left: 0px" />
-		<img src="dragon.gif" style="right: 0px" />
-		<div align=center style="height: 100px; font-size: 500%" id="display"></div>
-		<div align=center>
+	<body onkeydown="input()" class=" hasGoogleVoiceExt">
+		<img src="./Calculator_files/pirate.gif" style="left: 0px">
+		<img src="./Calculator_files/dragon.gif" style="right: 0px">
+		<div align="center" style="height: 100px; font-size: 500%" id="display"></div>
+		<div align="center">
 			<table>
-				<tr>
+				<tbody><tr>
 					<td><input name="one" onclick="one()" type="button" value="1" tabindex="1"></td>
 					<td><input name="two" onclick="two()" type="button" value="2" tabindex="2"></td>
 					<td><input name="three" onclick="three()" type="button" value="3" tabindex="3"></td>
@@ -245,7 +297,7 @@
 					<td><input name="eight" onclick="eight()" type="button" value="8" tabindex="8"></td>
 					<td><input name="nine" onclick="nine()" type="button" value="9" tabindex="9"></td>
 					<td><input name="times" onclick="times()" type="button" value="*" tabindex="10"></td>
-					<td rowspan=2><input name="equals" onclick="equals()" type="button" value="=" tabindex="13" style="height: 204px"></td>
+					<td rowspan="2"><input name="equals" onclick="equals()" type="button" value="=" tabindex="13" style="height: 204px"></td>
 				</tr>
 				<tr>
 					<td><input name="zero" onclick="zero()" type="button" value="0" tabindex="10"></td>
@@ -253,8 +305,9 @@
 					<td><input name="negative" onclick="negative()" type="button" value="±" tabindex="12"></td>
 					<td><input name="divide" onclick="divide()" type="button" value="/" tabindex="14"></td>
 				</tr>
-			</table>
+			</tbody></table>
 		</div>
-		<div align=center style="height: 100px; font-size: 500%">Secret animation when 123.456 is reached</div>
-	</body>
-</html>
+		<div align="center" style="height: 100px; font-size: 500%">Secret animation when 123.456 is reached</div>
+	
+
+</body></html>
