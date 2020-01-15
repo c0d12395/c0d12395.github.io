@@ -1,1 +1,21 @@
-test
+<!DOCTYPE html>
+<html>
+<body>
+
+Input: <br>
+<input type="text" id="input" value="Go away reaper!"><br><br>
+Reaped: <br>
+<p id="output"></p>
+
+<button onclick="reap()">REAP</button>
+
+<script>
+function reap() {
+  var str = document.getElementById("input").value; 
+  var res = str.replace(/[A-Za-z]+/g, "DIE");
+  document.getElementById("output").innerHTML = res;
+}
+</script>
+
+</body>
+</html>
